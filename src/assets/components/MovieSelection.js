@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import {useState,useEffect} from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 
 export default function MovieSelection(){
@@ -19,7 +20,12 @@ export default function MovieSelection(){
         <MoviesScreen>
             <span>Selecione o filme</span>
             <Movies>
-                {movies.map((movie)=> <Movie><img src={movie.posterURL}/></Movie>)}
+                {movies.map((movie)=> 
+                <Movie>
+                    <Link to={`/sessoes/${movie.id}`}>
+                        <img src={movie.posterURL}/>
+                    </Link>
+                </Movie>)}
             </Movies>
         </MoviesScreen>
     )

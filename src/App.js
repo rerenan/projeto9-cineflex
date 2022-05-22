@@ -3,7 +3,9 @@ import styled from 'styled-components'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import MovieSelection from './assets/components/MovieSelection'
-import Movie from './assets/components/Movie'
+import SessionsSelection from './assets/components/SessionsSelection'
+import SeatsSelection from './assets/components/SeatsSelection'
+
 export default function App() {
     return (
         <Global>
@@ -13,7 +15,8 @@ export default function App() {
                 </TopBar>
                 <Routes>
                     <Route path="/" element={< MovieSelection />}/>
-                    <Route path="/movie/:movieId" element={<Movie/>}/>
+                    <Route path="/sessoes/:movieId" element={<SessionsSelection/>}/>
+                    <Route path='/assentos/:sessionId' element={<SeatsSelection/>}/>
                 </Routes>
             </BrowserRouter>
         </Global>
