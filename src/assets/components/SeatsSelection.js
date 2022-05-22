@@ -15,35 +15,40 @@ export default function SeatsSelection() {
         const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${params.sessionId}/seats`)
         promise
             .then((response) => {
-                SetSeats((response.data.seats).map((seat =>({...seat, 'isSelected':false}))))
+                SetSeats((response.data.seats).map((seat => ({ ...seat, 'isSelected': false }))))
             })
     }, [])
 
-    function selectSeat(seatIndex){
-        if(!seats[seatIndex].isAvailable){
+    function selectSeat(seatIndex) {
+        if (!seats[seatIndex].isAvailable) {
             return alert("Esse assento não está disponível")
         }
-        let newSeats = seats.map((seat,index)=>{
-            if(index === seatIndex && seat.isAvailable){
+        let newSeats = seats.map((seat, index) => {
+            if (index === seatIndex && seat.isAvailable) {
                 return {
                     ...seat,
-                    isSelected:!seat.isSelected
+                    isSelected: !seat.isSelected
                 }
-            }else{
-                return {...seat}
+            } else {
+                return { ...seat }
             }
         })
         SetSeats([...newSeats])
     }
-    function SubTitle(){
-        return(
+
+    return (
+        <SeatsScreen>
+            <h3>Selecione o(s) assento(s)</h3>
+            <SeatsBox>
+                {seats.map((seat, index) => <Ball selected={seat.isSelected && seat.isAvailable ? selected : false} availability={seat.isAvailable ? available : unavailable} onClick={() => selectSeat(index)} >{index + 1}</Ball>)}
+            </SeatsBox>
             <Subtitle>
                 <Icon>
-                    <Ball  selected={selected}/>
+                    <Ball selected={selected} />
                     Selecionado
                 </Icon>
                 <Icon>
-                    <Ball  availability={available}/>
+                    <Ball availability={available} />
                     Disponível
                 </Icon>
                 <Icon>
@@ -51,29 +56,16 @@ export default function SeatsSelection() {
                     Indisponível
                 </Icon>
             </Subtitle>
-        )
-    }
-    function Inputs(){
-        return(
-            <Form>
+            <Inputs />
+            <form>
                 <Inputs>
-                <label htmlFor="name">Nome do comprador:</label>
-                <input required type="text" id="name" placeholder="Digite seu nome..." />
-                <label htmlFor="cpf">CPF do comprador:</label>
-                <input required type="text" id="cpf" placeholder="Digite seu CPF..." />
+                    <label htmlFor="name">Nome do comprador:</label>
+                    <input required type="text" id="name" placeholder="Digite seu nome..." />
+                    <label htmlFor="cpf">CPF do comprador:</label>
+                    <input required type="text" id="cpf" placeholder="Digite seu CPF..." />
                 </Inputs>
                 <button>Reservar assento(s)</button>
-            </Form>
-            )
-    }
-    return (
-        <SeatsScreen>
-            <h3>Selecione o(s) assento(s)</h3>
-            <SeatsBox>
-                {seats.map((seat,index) => <Ball selected={seat.isSelected && seat.isAvailable? selected:false} availability={seat.isAvailable? available:unavailable} onClick={()=>selectSeat(index)} >{index+1}</Ball>)}
-            </SeatsBox>
-            <SubTitle/>
-            <Inputs/>
+            </form>
         </SeatsScreen>
     )
 }
@@ -91,6 +83,32 @@ const SeatsScreen = styled.div`
         line-height: 28px;
         color: #293845;
     }
+    form{
+        width: 100%;
+        padding: 0px 20px;
+        box-sizing: border-box;
+        label {
+            color: #293845;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        input{
+            margin-bottom: 22px;
+            padding: 15px 10px;
+            box-sizing: border-box;
+            width: 100%;
+            border: 1px solid #D5D5D5;
+            border-radius: 3px;
+            font-size: 18px;
+            line-height: 21px;
+            ::placeholder, ::-webkit-input-placeholder{
+                font-style: italic;
+            }
+            :-ms-input-placeholder {
+                font-style: italic;
+            }
+        }
+    }
     
 `
 const SeatsBox = styled.div`
@@ -102,7 +120,7 @@ const Ball = styled.div`
     width: 26px;
     height: 26px;
     margin: 8px 5px;
-    background-color:${props => props.selected? props.selected: props.availability};
+    background-color:${props => props.selected ? props.selected : props.availability};
     border: 1px solid #808F9D;
     border-radius: 20px;
     box-sizing: border-box;
@@ -128,38 +146,14 @@ const Subtitle = styled.div`
         }
     }
 `
-const Icon=styled.div`
+const Icon = styled.div`
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
 `
-const Form = styled.form`
-    width: 100%;
-    box-sizing: border-box;
+const Inputs = styled.div`
     display:flex;
     flex-direction: column;
-    padding: 0px 15px;
-    label {
-        color: #293845;
-        font-size: 18px;
-        margin-bottom: 5px;
-    }
-    input{
-        margin-bottom: 22px;
-        padding: 15px 10px;
-        box-sizing: border-box;
-        width: 100%;
-        border: 1px solid #D5D5D5;
-        border-radius: 3px;
-        font-size: 18px;
-        line-height: 21px;
-        ::placeholder, ::-webkit-input-placeholder{
-            font-style: italic;
-        }
-        :-ms-input-placeholder {
-            font-style: italic;
-        }
-    }
+    width: 100%;
 `
-const Inputs = styled.div``
