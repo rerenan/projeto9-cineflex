@@ -4,13 +4,13 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 
-export default function MovieSelection({SetMovieNameImg}){
+export default function MovieSelection({SetMovieNameImg, SetBackIcon}){
     
     const [movies, SetMovies] = useState([]);
     
     useEffect(() => {
         const promise = axios.get('https://mock-api.driven.com.br/api/v5/cineflex/movies')
-
+        SetBackIcon(false)
         promise.then(response => {
             SetMovies(response.data);
         })
@@ -20,9 +20,12 @@ export default function MovieSelection({SetMovieNameImg}){
         <MoviesScreen>
             <span>Selecione o filme</span>
             <Movies>
-                {movies.map((movie)=> 
-                <Movie>
-                    <Link  onClick={()=> SetMovieNameImg([movie.title, movie.posterURL])} to={`/sessoes/${movie.id}`}>
+                {movies.map((movie, index)=> 
+                <Movie key={index}>
+                    <Link  onClick={()=> {
+                        SetMovieNameImg([movie.title, movie.posterURL])
+                        SetBackIcon(true)
+                        }} to={`/sessoes/${movie.id}`}>
                         <img src={movie.posterURL}/>
                     </Link>
                 </Movie>)}

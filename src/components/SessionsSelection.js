@@ -10,7 +10,6 @@ export default function SessionsSelection({SetSession, movieNameImg}){
     const [days, SetDays] = useState([]);
     const params = useParams();
     useEffect(()=>{
-        
         const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/movies/${params.movieId}/showtimes`)
         promise
             .then((response)=> SetDays(response.data.days))
@@ -19,12 +18,12 @@ export default function SessionsSelection({SetSession, movieNameImg}){
         <SessionsScreen>
             <h3>Selecione o horário</h3>
             
-            {days.map((session)=> 
-                <Sessions>
+            {days.map((session,index)=> 
+                <Sessions key={index}>
                     <span>{session.weekday} - {session.date}</span>
                     <ButtonsContainer>
-                        {session.showtimes.map((hour)=> 
-                        <StyledLink onClick={()=>SetSession([session.date,hour.name, session.weekday])} to={`/assentos/${hour.id}`}>{hour.name}</StyledLink>
+                        {session.showtimes.map((hour, index)=> 
+                        <StyledLink key={index} onClick={()=>SetSession([session.date,hour.name, session.weekday])} to={`/assentos/${hour.id}`}>{hour.name}</StyledLink>
                         )}
                     </ButtonsContainer>
                 </Sessions>
@@ -66,7 +65,9 @@ const Sessions = styled.div`
 `
 const ButtonsContainer = styled.div`
     display:flex;
-    justify-content:start;`
+    justify-content:start;
+`
+
 const StyledLink = styled(Link)`
     padding: 7px 15px;
     margin-right: 10px;

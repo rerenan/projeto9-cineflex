@@ -81,6 +81,6 @@ const StyledLink = styled(Link)`
     margin-top: 36px;
     margin-bottom: 58px;
     :active{
-        transform: scale(0.95);
+        transform: scale(0.90);
     }
 `

@@ -12,7 +12,7 @@ export default function SeatsSelection({name, cpf, SetName,SetCpf, SetChosenSeat
     const selected = '#8DD7CF'
     const unavailable = '#FBE192'
     const params = useParams();
-    const history = useNavigate();
+    const navigate = useNavigate();
     useEffect(() => {
 
         const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${params.sessionId}/seats`)
@@ -42,29 +42,28 @@ export default function SeatsSelection({name, cpf, SetName,SetCpf, SetChosenSeat
         e.preventDefault();
         const chosenSeatsIds = seats.filter((seat)=> seat.isSelected)
         if(chosenSeatsIds.length > 0){
+
             SetChosenSeats(chosenSeatsIds.map((seat)=>seat.name))
-            
             
             const reserve = {
                 ids: [chosenSeatsIds.map((seat)=> seat.id)],
                 name: name,
                 cpf: cpf
             }
-            console.log(reserve)
+
             const promise = axios.post('https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many',reserve)
-            promise.then((response)=> history('/sucesso'))
+            promise
+                .then((response)=> navigate('/sucesso'))
+                .catch((response) => alert(response))
         }else{
             alert("Você não selecionou nehum assento!!")
         }
-        
-        
-
     }
     return (
         <SeatsScreen>
             <h3>Selecione o(s) assento(s)</h3>
             <SeatsBox>
-                {seats.map((seat, index) => <Ball selected={seat.isSelected && seat.isAvailable ? selected : false} availability={seat.isAvailable ? available : unavailable} onClick={() => selectSeat(index)} >{index + 1}</Ball>)}
+                {seats.map((seat, index) => <Ball key={index} selected={seat.isSelected && seat.isAvailable ? selected : false} availability={seat.isAvailable ? available : unavailable} onClick={() => selectSeat(index)} >{index + 1}</Ball>)}
             </SeatsBox>
             <Subtitle>
                 <Icon>
