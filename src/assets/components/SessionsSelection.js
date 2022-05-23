@@ -4,7 +4,9 @@ import {useState,useEffect} from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-export default function SessionsSelection(){
+import FootBar from './FootBar'
+
+export default function SessionsSelection({SetSession, movieNameImg}){
     const [days, SetDays] = useState([]);
     const params = useParams();
     useEffect(()=>{
@@ -22,11 +24,12 @@ export default function SessionsSelection(){
                     <span>{session.weekday} - {session.date}</span>
                     <ButtonsContainer>
                         {session.showtimes.map((hour)=> 
-                        <StyledLink to={`/assentos/${hour.id}`}>{hour.name}</StyledLink>
+                        <StyledLink onClick={()=>SetSession([session.date,hour.name, session.weekday])} to={`/assentos/${hour.id}`}>{hour.name}</StyledLink>
                         )}
                     </ButtonsContainer>
                 </Sessions>
             )}
+            <FootBar movieNameImg={movieNameImg} session='' />
         </SessionsScreen>
     )
 }
@@ -36,7 +39,8 @@ const SessionsScreen = styled.div`
     flex-direction: column;
     align-items: center;
     padding: 0px 28px;
-    margin-bottom: 50px;
+    margin-top: 65px;
+    margin-bottom:150px;
     h3 {
         margin-top: 40px;
         margin-bottom: 20px;

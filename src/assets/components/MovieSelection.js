@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 
-export default function MovieSelection(){
+export default function MovieSelection({SetMovieNameImg}){
     
     const [movies, SetMovies] = useState([]);
     
@@ -22,7 +22,7 @@ export default function MovieSelection(){
             <Movies>
                 {movies.map((movie)=> 
                 <Movie>
-                    <Link to={`/sessoes/${movie.id}`}>
+                    <Link  onClick={()=> SetMovieNameImg([movie.title, movie.posterURL])} to={`/sessoes/${movie.id}`}>
                         <img src={movie.posterURL}/>
                     </Link>
                 </Movie>)}
@@ -35,6 +35,7 @@ const MoviesScreen = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 65px;
     span {
         margin-top: 40px;
         font-size: 24px;
